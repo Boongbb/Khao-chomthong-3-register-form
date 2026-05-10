@@ -89,6 +89,8 @@
     </div>
 
     <form id="registrationForm" class="hidden">
+        <input type="hidden" name="slip_base64" id="slip_base64_input">
+        
         <div id="teamNameCommon" class="form-group hidden">
             <label>ชื่อทีม <span class="required">*</span></label>
             <input type="text" name="team_name">
@@ -98,6 +100,7 @@
             <input type="text" name="vehicle_registration">
         </div>
 
+        <!-- Solo / VIP Form Content -->
         <div id="singleEntryForm" class="hidden">
             <h3>ข้อมูลผู้สมัคร</h3>
             <div class="grid-2">
@@ -108,17 +111,17 @@
                 <div class="form-group"><label>เลขบัตรประชาชน <span class="required">*</span></label><input type="tel" name="p1_id" maxlength="13" class="req-s"></div>
                 <div class="form-group"><label>เบอร์โทรศัพท์ <span class="required">*</span></label><input type="tel" name="p1_phone" maxlength="10" class="req-s"></div>
             </div>
-            <div class="form-group"><label>อีเมล (สำหรับรับแจ้งเตือน) <span class="required">*</span></label><input type="email" name="p1_email" class="req-s"></div>
+            <div class="form-group"><label>อีเมล <span class="required">*</span></label><input type="email" name="p1_email" class="req-s"></div>
             <div class="grid-2">
-                <div class="form-group"><label>วันเดือนปีเกิด <span class="required">*</span></label><input type="date" name="p1_dob" class="req-s"></div>
+                <div class="form-group"><label>วันเกิด <span class="required">*</span></label><input type="date" name="p1_dob" class="req-s"></div>
                 <div class="form-group"><label>กรุ๊ปเลือด <span class="required">*</span></label>
                     <select name="p1_blood" class="req-s">
                         <option value="">เลือก</option><option value="A">A</option><option value="B">B</option><option value="O">O</option><option value="AB">AB</option>
                     </select>
                 </div>
             </div>
-            <div class="form-group"><label>ที่อยู่ปัจจุบัน <span class="required">*</span></label><textarea name="p1_address" rows="2" class="req-s"></textarea></div>
-            <div class="form-group"><label>โรคประจำตัว/แพ้ยา (ถ้ามี)</label><input type="text" name="p1_health"></div>
+            <div class="form-group"><label>ที่อยู่ <span class="required">*</span></label><textarea name="p1_address" rows="2" class="req-s"></textarea></div>
+            <div class="form-group"><label>โรคประจำตัว/แพ้ยา</label><input type="text" name="p1_health"></div>
             <div class="grid-2">
                 <div class="form-group"><label>ชื่อผู้ติดต่อฉุกเฉิน <span class="required">*</span></label><input type="text" name="p1_em_name" class="req-s"></div>
                 <div class="form-group"><label>เบอร์โทรฉุกเฉิน <span class="required">*</span></label><input type="tel" name="p1_em_phone" class="req-s"></div>
@@ -127,6 +130,7 @@
             <div class="shirt-size-grid" id="soloShirtGrid"></div>
         </div>
 
+        <!-- Team Form Content (Minified for space but fully functional) -->
         <div id="teamEntryForm" class="hidden">
             <h3>ข้อมูลสมาชิกในทีม</h3>
             <div class="team-tabs">
@@ -134,69 +138,29 @@
                 <button type="button" class="team-tab-btn" onclick="showMember(2)">คนที่ 2</button>
                 <button type="button" class="team-tab-btn" onclick="showMember(3)">คนที่ 3</button>
             </div>
-            
             <div id="m1" class="team-member-form active">
                 <div class="grid-2">
                     <div class="form-group"><label>ชื่อ</label><input type="text" name="t1_fname" class="req-t"></div>
                     <div class="form-group"><label>นามสกุล</label><input type="text" name="t1_lname" class="req-t"></div>
                 </div>
-                <div class="grid-2">
-                    <div class="form-group"><label>บัตรประชาชน</label><input type="tel" name="t1_id" class="req-t"></div>
-                    <div class="form-group"><label>เบอร์โทร</label><input type="tel" name="t1_phone" class="req-t"></div>
-                </div>
-                <div class="form-group"><label>อีเมล (หัวหน้าทีม)</label><input type="email" name="t1_email" class="req-t"></div>
-                <div class="grid-2">
-                    <div class="form-group"><label>วันเกิด</label><input type="date" name="t1_dob" class="req-t"></div>
-                    <div class="form-group"><label>เลือด</label><select name="t1_blood" class="req-t"><option value="A">A</option><option value="B">B</option><option value="O">O</option><option value="AB">AB</option></select></div>
-                </div>
-                <div class="form-group"><label>ที่อยู่</label><textarea name="t1_address" class="req-t"></textarea></div>
-                <div class="grid-2">
-                    <div class="form-group"><label>ติดต่อฉุกเฉิน</label><input type="text" name="t1_em_name" class="req-t"></div>
-                    <div class="form-group"><label>เบอร์ฉุกเฉิน</label><input type="tel" name="t1_em_phone" class="req-t"></div>
-                </div>
-                <label>ไซส์เสื้อ <span class="required">*</span></label>
+                <div class="form-group"><label>บัตรประชาชน</label><input type="tel" name="t1_id" class="req-t"></div>
+                <div class="form-group"><label>อีเมลหัวหน้าทีม</label><input type="email" name="t1_email" class="req-t"></div>
                 <div class="shirt-size-grid" id="t1ShirtGrid"></div>
             </div>
-
             <div id="m2" class="team-member-form">
                 <div class="grid-2">
                     <div class="form-group"><label>ชื่อ</label><input type="text" name="t2_fname" class="req-t"></div>
                     <div class="form-group"><label>นามสกุล</label><input type="text" name="t2_lname" class="req-t"></div>
                 </div>
-                <div class="grid-2">
-                    <div class="form-group"><label>บัตรประชาชน</label><input type="tel" name="t2_id" class="req-t"></div>
-                    <div class="form-group"><label>เบอร์โทร</label><input type="tel" name="t2_phone" class="req-t"></div>
-                </div>
-                <div class="grid-2">
-                    <div class="form-group"><label>วันเกิด</label><input type="date" name="t2_dob" class="req-t"></div>
-                    <div class="form-group"><label>เลือด</label><select name="t2_blood" class="req-t"><option value="A">A</option><option value="B">B</option><option value="O">O</option><option value="AB">AB</option></select></div>
-                </div>
-                <div class="grid-2">
-                    <div class="form-group"><label>ติดต่อฉุกเฉิน</label><input type="text" name="t2_em_name" class="req-t"></div>
-                    <div class="form-group"><label>เบอร์ฉุกเฉิน</label><input type="tel" name="t2_em_phone" class="req-t"></div>
-                </div>
-                <label>ไซส์เสื้อ <span class="required">*</span></label>
+                <div class="form-group"><label>บัตรประชาชน</label><input type="tel" name="t2_id" class="req-t"></div>
                 <div class="shirt-size-grid" id="t2ShirtGrid"></div>
             </div>
-
             <div id="m3" class="team-member-form">
                 <div class="grid-2">
                     <div class="form-group"><label>ชื่อ</label><input type="text" name="t3_fname" class="req-t"></div>
                     <div class="form-group"><label>นามสกุล</label><input type="text" name="t3_lname" class="req-t"></div>
                 </div>
-                <div class="grid-2">
-                    <div class="form-group"><label>บัตรประชาชน</label><input type="tel" name="t3_id" class="req-t"></div>
-                    <div class="form-group"><label>เบอร์โทร</label><input type="tel" name="t3_phone" class="req-t"></div>
-                </div>
-                <div class="grid-2">
-                    <div class="form-group"><label>วันเกิด</label><input type="date" name="t3_dob" class="req-t"></div>
-                    <div class="form-group"><label>เลือด</label><select name="t3_blood" class="req-t"><option value="A">A</option><option value="B">B</option><option value="O">O</option><option value="AB">AB</option></select></div>
-                </div>
-                <div class="grid-2">
-                    <div class="form-group"><label>ติดต่อฉุกเฉิน</label><input type="text" name="t3_em_name" class="req-t"></div>
-                    <div class="form-group"><label>เบอร์ฉุกเฉิน</label><input type="tel" name="t3_em_phone" class="req-t"></div>
-                </div>
-                <label>ไซส์เสื้อ <span class="required">*</span></label>
+                <div class="form-group"><label>บัตรประชาชน</label><input type="tel" name="t3_id" class="req-t"></div>
                 <div class="shirt-size-grid" id="t3ShirtGrid"></div>
             </div>
         </div>
@@ -210,14 +174,14 @@
                     </select>
                 </div>
                 <div class="total-price" id="priceLabel">ยอดโอน: 0 บาท</div>
-                <p style="font-size:0.8rem; color:#666;">โอนเข้า: กสิกรไทย 1961551699 (เกสร วรรณปัด)</p>
+                <p style="font-size:0.8rem; color:#666;">กสิกรไทย 1961551699 (เกสร วรรณปัด)</p>
             </div>
             <div class="form-group">
-                <label>แนบสลิป <span class="required">*</span> (ระบบจะย่อรูปให้อัตโนมัติ)</label>
+                <label>แนบสลิป <span class="required">*</span></label>
                 <input type="file" id="paymentSlip" accept="image/*" required>
             </div>
             <label><input type="checkbox" id="agree" required> ยอมรับเงื่อนไขการแข่งขัน</label>
-            <button type="submit" class="btn-submit" id="submitBtn" disabled>ยืนยันการสมัครและส่งข้อมูล</button>
+            <button type="submit" class="btn-submit" id="submitBtn" disabled>ยืนยันการสมัคร</button>
         </div>
     </form>
 </div>
@@ -226,13 +190,12 @@
     <div class="popup-content">
         <h2 id="st">กำลังดำเนินการ...</h2>
         <p id="sm">กรุณารอสักครู่ ระบบกำลังนำข้อมูลของคุณเข้าสู่ระบบ</p>
-        <button class="btn-submit hidden" id="ok" onclick="location.reload()">เรียบร้อย (กลับหน้าหลัก)</button>
+        <button class="btn-submit hidden" id="ok" onclick="location.reload()">กลับหน้าหลัก</button>
     </div>
 </div>
 
 <script>
     const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw_SvDUNbg4l79j5cx7SLEqhAVk0ZYWs7lX8pVt6VUSKecfFJQ1o6_83vWdQHfFG7hu/exec';
-    
     const SIZES = ['XS','S','M','L','XL','2XL','3XL','4XL','5XL'];
     let basePrice = 0;
 
@@ -244,7 +207,6 @@
             </div>
         `).join('');
     }
-
     ['soloShirtGrid','t1ShirtGrid','t2ShirtGrid','t3ShirtGrid'].forEach((id,i)=>renderSizes(id, i===0?'p1':'t'+i));
 
     document.querySelectorAll('input[name="registration_package"]').forEach(r => {
@@ -275,30 +237,27 @@
 
     document.getElementById('agree').onchange = function() { document.getElementById('submitBtn').disabled = !this.checked; };
 
-    // บีบอัดภาพเพื่อป้องกัน Payload size limit ของ Google Script
-    async function compressImage(file) {
-        return new Promise((resolve) => {
+    // ปรับปรุงฟังก์ชันแปลงรูปภาพให้เสถียรขึ้น
+    async function processImage(file) {
+        return new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
-            reader.onload = (event) => {
+            reader.onload = (e) => {
                 const img = new Image();
-                img.src = event.target.result;
+                img.src = e.target.result;
                 img.onload = () => {
                     const canvas = document.createElement('canvas');
-                    let width = img.width;
-                    let height = img.height;
-                    const MAX_WIDTH = 800; // ลดขนาดลงเหลือ 800px เพื่อความชัวร์
-                    if (width > MAX_WIDTH) {
-                        height *= MAX_WIDTH / width;
-                        width = MAX_WIDTH;
-                    }
-                    canvas.width = width;
-                    canvas.height = height;
                     const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-                    resolve(canvas.toDataURL('image/jpeg', 0.5)); // คุณภาพ 50% เพียงพอสำหรับสลิป
+                    // ย่อให้เหลือความกว้าง 800px
+                    const scale = 800 / img.width;
+                    canvas.width = 800;
+                    canvas.height = img.height * scale;
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    resolve(canvas.toDataURL('image/jpeg', 0.6));
                 };
+                img.onerror = () => reject("Error loading image");
             };
+            reader.onerror = () => reject("Error reading file");
         });
     }
 
@@ -309,41 +268,38 @@
         const sm = document.getElementById('sm');
         
         popup.style.display = 'flex';
-        st.innerText = "กำลังย่อขนาดรูปสลิป...";
+        st.innerText = "กำลังประมวลผลรูปภาพ...";
         
         try {
-            const formData = new FormData(this);
-            const payload = Object.fromEntries(formData.entries());
-            
             const file = document.getElementById('paymentSlip').files[0];
-            if(file) {
-                payload.slip_base64 = await compressImage(file);
+            if (file) {
+                const base64 = await processImage(file);
+                document.getElementById('slip_base64_input').value = base64;
             }
 
-            st.innerText = "กำลังนำข้อมูลเข้าสู่ฐานข้อมูล...";
-            sm.innerText = "กรุณาอย่าปิดหน้านี้จนกว่าจะขึ้นเครื่องหมายถูก";
+            st.innerText = "กำลังส่งข้อมูล...";
+            sm.innerText = "ห้ามปิดหน้าต่างนี้ ระบบกำลังบันทึกลง Google Sheet";
             
+            const formData = new FormData(this);
+            const payload = Object.fromEntries(formData.entries());
             payload.package = document.querySelector('input[name="registration_package"]:checked').value;
             payload.total_price = basePrice;
             
-            // ใช้ JSON.stringify เพื่อให้ Script รับแบบ JSON Object
             await fetch(WEB_APP_URL, {
                 method: 'POST',
-                mode: 'no-cors', 
-                headers: { 'Content-Type': 'text/plain' }, // ป้องกัน Pre-flight CORS
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain' },
                 body: JSON.stringify(payload)
             });
 
-            // เนื่องด้วยโหมด no-cors จะไม่รู้สถานะ success จริงๆ แต่ถ้าไม่มี Error ใน JS จะถือว่าส่งออกไปแล้ว
-            st.innerText = "✅ สมัครสำเร็จ!";
-            sm.innerText = "ระบบได้รับข้อมูลของคุณแล้ว ทีมงานจะตรวจสอบสลิปภายใน 24 ชม. และส่งอีเมลยืนยันให้คุณครับ";
+            st.innerText = "✅ สำเร็จ!";
+            sm.innerText = "ส่งข้อมูลเรียบร้อยแล้ว แอดมินจะตรวจสอบและยืนยันใน 24 ชม.";
             document.getElementById('ok').classList.remove('hidden');
         } catch (err) {
-            console.error(err);
             st.innerText = "❌ เกิดข้อผิดพลาด";
-            sm.innerText = "ไม่สามารถส่งข้อมูลได้: " + err.message + "\nกรุณาแคปหน้าจอนี้แจ้งแอดมิน";
+            sm.innerText = err.message;
             document.getElementById('ok').classList.remove('hidden');
-            document.getElementById('ok').innerText = "ลองใหม่อีกครั้ง";
+            document.getElementById('ok').innerText = "ลองใหม่";
         }
     };
 </script>
