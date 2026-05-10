@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khao Chomthong Hill Repeat #3 - Registration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #e67e22;
+            --accent: #27ae60;
+            --bg: #f4f7f6;
+            --white: #ffffff;
+            --border: #dcdde1;
+            --info: #3498db;
+            --event-green: #2d5a27; /* สีเขียวสำหรับหัวข้อ */
+        }
+
+        * { box-sizing: border-box; font-family: 'Kanit', sans-serif; }
+        body { background: var(--bg); color: var(--primary); margin: 0; padding: 20px; line-height: 1.6; }
+        .container { max-width: 850px; margin: 0 auto; background: var(--white); padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        
+        .header-section { text-align: center; margin-bottom: 30px; }
+        .main-title { color: var(--event-green); font-size: 2.2rem; font-weight: 600; margin: 0; line-height: 1.2; }
+        .sub-title { color: var(--event-green); font-size: 1.2rem; font-weight: 400; margin-top: 5px; opacity: 0.8; }
+        
+        h2, h3 { text-align: center; color: var(--primary); }
+        h3 { border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 30px; text-align: left; font-size: 1.2rem; color: var(--secondary); }
+        h4 { margin-bottom: 15px; color: var(--primary); border-left: 4px solid var(--secondary); padding-left: 10px; }
+        
+        .main-menu { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; }
+        .menu-btn { padding: 12px 25px; border: 2px solid var(--primary); border-radius: 30px; cursor: pointer; transition: 0.3s; font-weight: 600; text-align: center; }
+        input[name="main_menu"] { display: none; }
+        input[name="main_menu"]:checked + .menu-btn { background: var(--primary); color: white; }
+
+        .package-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .package-card { border: 2px solid #eee; padding: 20px; border-radius: 12px; text-align: center; cursor: pointer; transition: 0.3s; }
+        input[name="registration_package"] { display: none; }
+        input[name="registration_package"]:checked + .package-card { border-color: var(--secondary); background: #fffaf5; transform: translateY(-5px); }
+        .package-card h4 { margin: 0; color: var(--secondary); font-size: 1.3rem; border: none; padding: 0; }
+        .package-card .price { font-size: 1.5rem; font-weight: bold; margin: 10px 0; }
+
+        /* Shared Shirt Preview */
+        .shirt-preview-container { display: flex; flex-direction: column; align-items: center; margin: 20px 0; background: #f9f9f9; padding: 15px; border-radius: 12px; border: 1px solid #eee; }
+        .shirt-img-box { background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); max-width: 400px; width: 100%; aspect-ratio: 1 / 1; }
+        .shirt-img-box img { width: 100%; height: 100%; object-fit: contain; display: block; }
+        .shirt-info { margin-top: 10px; text-align: center; font-size: 0.9rem; color: #666; }
+
+        .shirt-size-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; margin-top: 10px; }
+        .shirt-size-item { position: relative; }
+        .shirt-size-item input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+        .shirt-size-item label { display: block; padding: 8px; background: #fff; border: 1px solid var(--border); border-radius: 6px; text-align: center; cursor: pointer; transition: 0.2s; font-size: 0.85rem; }
+        .shirt-size-item input[type="radio"]:checked + label { border-color: var(--secondary); background: #fffaf5; color: var(--secondary); font-weight: 600; }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.95rem; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; transition: 0.2s; }
+        input:focus { border-color: var(--secondary); outline: none; }
+
+        .team-tabs { display: flex; gap: 5px; margin: 20px 0; border-bottom: 2px solid #eee; overflow-x: auto; }
+        .team-tab-btn { padding: 12px 15px; cursor: pointer; border-radius: 8px 8px 0 0; background: #eee; border: none; font-weight: 600; flex: 1; min-width: 120px; transition: 0.3s; }
+        .team-tab-btn.active { background: var(--primary); color: white; }
+        .team-member-form { display: none; padding: 20px; border: 1px solid #eee; border-top: none; border-radius: 0 0 8px 8px; background: #fafafa; }
+        .team-member-form.active { display: block; }
+
+        .summary-box { background: #f9f9f9; padding: 20px; border-radius: 12px; border-left: 5px solid var(--accent); margin: 30px 0; }
+        .summary-row { display: flex; justify-content: space-between; font-size: 1.1rem; margin-bottom: 8px; }
+        .summary-row.total { font-weight: 600; border-top: 1px dashed #ccc; padding-top: 10px; margin-top: 10px; }
+        .total-price { color: var(--accent); font-size: 1.4rem; }
+        .installment-detail { background: #fffbe6; padding: 12px; border-radius: 8px; margin-top: 10px; border: 1px solid #ffe58f; }
+        
+        .bank-info { background: #eff3f6; padding: 20px; border-radius: 12px; margin-top: 15px; text-align: center; border: 1px solid #d1d9e0; }
+        .copy-btn { background: var(--accent); color: white; border: none; padding: 12px 25px; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; margin-top: 15px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .copy-success-msg { color: var(--accent); font-size: 0.85rem; margin-top: 5px; display: none; font-weight: 600; }
+
+        .file-upload-label { display: block; padding: 40px; border: 2px dashed #ccc; border-radius: 12px; text-align: center; cursor: pointer; margin-top: 10px; }
+        #paymentSlip { display: none; }
+
+        .agreement-box { background: #fff; border: 1px solid var(--border); padding: 15px; border-radius: 8px; margin-top: 20px; display: flex; align-items: flex-start; gap: 12px; cursor: pointer; }
+        .agreement-box input { width: 22px; height: 22px; cursor: pointer; margin-top: 3px; }
+        .agreement-text { font-size: 0.95rem; color: #444; }
+        
+        .btn-submit { width: 100%; padding: 18px; background: var(--accent); color: white; border: none; border-radius: 10px; font-size: 1.2rem; font-weight: 600; cursor: pointer; transition: 0.3s; margin-top: 20px; }
+        .btn-submit:hover { background: #219150; }
+        .btn-submit:disabled { background: #ccc; cursor: not-allowed; }
+
+        .popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
+        .popup-content { background: white; padding: 30px; border-radius: 20px; max-width: 550px; width: 100%; text-align: center; position: relative; max-height: 90vh; overflow-y: auto; }
+        
+        .hidden { display: none; }
+        .required { color: red; }
+        @media (max-width: 600px) { 
+            .grid-2 { grid-template-columns: 1fr; } 
+            .shirt-size-grid { grid-template-columns: 1fr 1fr; } 
+            .main-title { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-section">
+        <h1 class="main-title">Khao Chomthong Hill Repeat #3</h1>
+        <div class="sub-title">The Deep Green</div>
+    </div>
+
+    <div class="main-menu">
+        <label>
+            <input type="radio" name="main_menu" value="registration" checked>
+            <div class="menu-btn">สมัครเข้าร่วม</div>
+        </label>
+        <label>
+            <input type="radio" name="main_menu" value="status">
+            <div class="menu-btn">ตรวจสอบสถานะ</div>
+        </label>
+    </div>
+
+    <div id="packageSection">
+        <h2>เลือกประเภทการสมัคร</h2>
+        <div class="package-grid">
+            <label>
+                <input type="radio" name="registration_package" value="Solo" data-price="899" required>
+                <div class="package-card">
+                    <h4>Solo</h4>
+                    <div class="price">899.-</div>
+                    <small>สมัครเดี่ยว (1 ท่าน)</small>
+                </div>
+            </label>
+            <label>
+                <input type="radio" name="registration_package" value="VIP" data-price="1999">
+                <div class="package-card">
+                    <h4>VIP</h4>
+                    <div class="price">1,999.-</div>
+                    <small>(1 ท่าน)</small>
+                </div>
+            </label>
+            <label>
+                <input type="radio" name="registration_package" value="Team" data-price="2499">
+                <div class="package-card">
+                    <h4>Team</h4>
+                    <div class="price">2,499.-</div>
+                    <small>สมัครทีม (3 ท่าน)</small>
+                </div>
+            </label>
+        </div>
+    </div>
+
+    <form id="registrationForm" class="hidden">
+        <!-- Shirt Preview Section -->
+        <div class="shirt-preview-container">
+            <h4>แบบเสื้อที่ระลึก</h4>
+            <div class="shirt-img-box">
+                <img src="https://i.ibb.co/353RtdQ4/Khao-Chom-Thong-Hill-Repeat-3-The-Deep-Green-1.png" alt="แบบเสื้อ">
+            </div>
+            <div class="shirt-info">Deep Green Series - Special Edition</div>
+        </div>
+
+        <div id="vipOnlyFields" class="form-group hidden">
+            <label>หมายเลขทะเบียนรถ (เฉพาะ VIP) <span class="required">*</span></label>
+            <input type="text" name="vehicle_registration" placeholder="ตัวอย่าง: กข 1234 นครราชสีมา">
+        </div>
+
+        <div id="teamNameCommon" class="form-group hidden">
+            <label>ชื่อทีม <span class="required">*</span></label>
+            <input type="text" name="team_name" placeholder="ระบุชื่อทีมของคุณ" id="teamNameInput">
+        </div>
+
+        <!-- Solo / VIP Form Section -->
+        <div id="singleEntryForm" class="hidden">
+            <h3>ข้อมูลผู้สมัคร</h3>
+            <div class="grid-2">
+                <div class="form-group"><label>ชื่อ</label><input type="text" name="p1_first_name" class="req-s"></div>
+                <div class="form-group"><label>นามสกุล</label><input type="text" name="p1_last_name" class="req-s"></div>
+            </div>
+            <div class="grid-2">
+                <div class="form-group"><label>เลขบัตรประชาชน</label><input type="tel" name="p1_id" maxlength="13" class="req-s"></div>
+                <div class="form-group"><label>สัญชาติ</label><input type="text" name="p1_nationality" value="ไทย" class="req-s"></div>
+            </div>
+            <div class="grid-2">
+                <div class="form-group"><label>วันเกิด</label><input type="date" name="p1_dob" class="req-s"></div>
+                <div class="form-group">
+                    <label>กรุ๊ปเลือด</label>
+                    <select name="p1_blood" class="req-s">
+                        <option value="">-- เลือก --</option>
+                        <option value="A">A</option><option value="B">B</option><option value="O">O</option><option value="AB">AB</option>
+                    </select>
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="form-group"><label>เบอร์โทรศัพท์</label><input type="tel" name="p1_phone" maxlength="10" class="req-s"></div>
+                <div class="form-group"><label>อีเมล</label><input type="email" name="p1_email" class="req-s"></div>
+            </div>
+            <div class="form-group"><label>ที่อยู่ติดต่อได้</label><textarea name="p1_address" rows="2" class="req-s"></textarea></div>
+            <div class="form-group"><label>ปัญหาสุขภาพ/โรคประจำตัว</label><input type="text" name="p1_health" class="req-s"></div>
+            <div class="grid-2">
+                <div class="form-group"><label>ชื่อผู้ติดต่อฉุกเฉิน</label><input type="text" name="p1_em_name" class="req-s"></div>
+                <div class="form-group"><label>เบอร์โทรฉุกเฉิน</label><input type="tel" name="p1_em_phone" maxlength="10" class="req-s"></div>
+            </div>
+
+            <h4>ไซส์เสื้อผู้สมัคร <span class="required">*</span></h4>
+            <div class="shirt-size-grid" id="soloShirtGrid"></div>
+        </div>
+
+        <!-- Team Form Section -->
+        <div id="teamEntryForm" class="hidden">
+            <h3>ข้อมูลสมาชิกในทีม (3 ท่าน)</h3>
+            <div class="team-tabs">
+                <button type="button" class="team-tab-btn active" onclick="showMember(1)">คนที่ 1 (หัวหน้า)</button>
+                <button type="button" class="team-tab-btn" onclick="showMember(2)">คนที่ 2</button>
+                <button type="button" class="team-tab-btn" onclick="showMember(3)">คนที่ 3</button>
+            </div>
+
+            <div id="memberFormsContainer">
+                <div id="m1" class="team-member-form active">
+                    <h4>ข้อมูลสมาชิกคนที่ 1 (หัวหน้าทีม)</h4>
+                    <div class="grid-2">
+                        <div class="form-group"><label>ชื่อ</label><input type="text" name="t1_fname" class="req-t"></div>
+                        <div class="form-group"><label>นามสกุล</label><input type="text" name="t1_lname" class="req-t"></div>
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group"><label>เลขบัตรประชาชน</label><input type="tel" name="t1_id" maxlength="13" class="req-t"></div>
+                        <div class="form-group"><label>วันเกิด</label><input type="date" name="t1_dob" class="req-t"></div>
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group"><label>เบอร์โทรศัพท์</label><input type="tel" name="t1_phone" maxlength="10" class="req-t"></div>
+                        <div class="form-group">
+                            <label>กรุ๊ปเลือด</label>
+                            <select name="t1_blood" class="req-t">
+                                <option value="">-- เลือก --</option>
+                                <option value="A">A</option><option value="B">B</option><option value="O">O</option><option value="AB">AB</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group"><label>ปัญหาสุขภาพ/โรคประจำตัว</label><input type="text" name="t1_health" class="req-t"></div>
+                    <div class="form-group"><label>ที่อยู่ (สำหรับจัดส่งของทั้งทีม)</label><textarea name="t1_address" rows="2" class="req-t"></textarea></div>
+                    <div class="grid-2">
+                        <div class="form-group"><label>ชื่อผู้ติดต่อฉุกเฉิน</label><input type="text" name="t1_em_name" class="req-t"></div>
+                        <div class="form-group"><label>เบอร์โทรฉุกเฉิน</label><input type="tel" name="t1_em_phone" maxlength="10" class="req-t"></div>
+                    </div>
+                    <label>ไซส์เสื้อสมาชิกคนที่ 1 <span class="required">*</span></label>
+                    <div class="shirt-size-grid" id="t1ShirtGrid"></div>
+                </div>
+
+                <div id="m2" class="team-member-form">
+                    <h4>ข้อมูลสมาชิกคนที่ 2</h4>
+                    <div class="grid-2">
+                        <div class="form-group"><label>ชื่อ</label><input type="text" name="t2_fname" class="req-t"></div>
+                        <div class="form-group"><label>นามสกุล</label><input type="text" name="t2_lname" class="req-t"></div>
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group"><label>เลขบัตรประชาชน</label><input type="tel" name="t2_id" maxlength="13" class="req-t"></div>
+                        <div class="form-group"><label>วันเกิด</label><input type="date" name="t2_dob" class="req-t"></div>
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group"><label>เบอร์โทรศัพท์</label><input type="tel" name="t2_phone" maxlength="10" class="req-t"></div>
+                        <div class="form-group">
+                            <label>กรุ๊ปเลือด</label>
+                            <select name="t2_blood" class="req-t">
+                                <option value="">-- เลือก --</option>
+                                <option value="A">A</option><option value="B">B</option><option value="O">O</option><option value="AB">AB</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group"><label>ปัญหาสุขภาพ/โรคประจำตัว</label><input type="text" name="t2_health" class="req-t"></div>
+                    <div class="grid-2">
+                        <div class="form-group"><label>ชื่อผู้ติดต่อฉุกเฉิน</label><input type="text" name="t2_em_name" class="req-t"></div>
+                        <div class="form-group"><label>เบอร์โทรฉุกเฉิน</label><input type="tel" name="t2_em_phone" maxlength="10" class="req-t"></div>
+                    </div>
+                    <label>ไซส์เสื้อสมาชิกคนที่ 2 <span class="required">*</span></label>
+                    <div class="shirt-size-grid" id="t2ShirtGrid"></div>
+                </div>
+
+                <div id="m3" class="team-member-form">
+                    <h4>ข้อมูลสมาชิกคนที่ 3</h4>
+                    <div class="grid-2">
+                        <div class="form-group"><label>ชื่อ</label><input type="text" name="t3_fname" class="req-t"></div>
+                        <div class="form-group"><label>นามสกุล</label><input type="text" name="t3_lname" class="req-t"></div>
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group"><label>เลขบัตรประชาชน</label><input type="tel" name="t3_id" maxlength="13" class="req-t"></div>
+                        <div class="form-group"><label>วันเกิด</label><input type="date" name="t3_dob" class="req-t"></div>
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group"><label>เบอร์โทรศัพท์</label><input type="tel" name="t3_phone" maxlength="10" class="req-t"></div>
+                        <div class="form-group">
+                            <label>กรุ๊ปเลือด</label>
+                            <select name="t3_blood" class="req-t">
+                                <option value="">-- เลือก --</option>
+                                <option value="A">A</option><option value="B">B</option><option value="O">O</option><option value="AB">AB</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group"><label>ปัญหาสุขภาพ/โรคประจำตัว</label><input type="text" name="t3_health" class="req-t"></div>
+                    <div class="grid-2">
+                        <div class="form-group"><label>ชื่อผู้ติดต่อฉุกเฉิน</label><input type="text" name="t3_em_name" class="req-t"></div>
+                        <div class="form-group"><label>เบอร์โทรฉุกเฉิน</label><input type="tel" name="t3_em_phone" maxlength="10" class="req-t"></div>
+                    </div>
+                    <label>ไซส์เสื้อสมาชิกคนที่ 3 <span class="required">*</span></label>
+                    <div class="shirt-size-grid" id="t3ShirtGrid"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary & Payment Section -->
+        <div id="paymentSection" class="hidden">
+            <div class="summary-box">
+                <div class="summary-row"><span>แพ็คเกจที่เลือก:</span><span id="summaryPackage" style="color:var(--secondary); font-weight:600;">-</span></div>
+                <div class="summary-row"><span>ราคารวม:</span><span id="summaryPrice">-</span></div>
+                
+                <div class="form-group mt-20" style="margin-top:20px;">
+                    <label>รูปแบบการชำระเงิน</label>
+                    <div style="display: flex; gap: 20px;">
+                        <label style="cursor:pointer"><input type="radio" name="payment_method" value="full" checked onchange="updateCalculations()"> ชำระเต็มจำนวน</label>
+                        <label style="cursor:pointer"><input type="radio" name="payment_method" value="installment" onchange="updateCalculations()"> ผ่อนชำระ (2 งวด)</label>
+                    </div>
+                </div>
+
+                <div id="installmentCalc" class="installment-detail hidden">
+                    <div class="summary-row" style="color:#856404; font-size: 0.95rem;">
+                        <span>งวดที่ 1 (ชำระวันนี้ 50%):</span>
+                        <strong id="inst1Text">0 บาท</strong>
+                    </div>
+                    <div class="summary-row" style="color:#856404; font-size: 0.95rem;">
+                        <span>งวดที่ 2 (ภายใน 30 วัน):</span>
+                        <strong id="inst2Text">0 บาท</strong>
+                    </div>
+                </div>
+
+                <div class="summary-row total">
+                    <span>ยอดที่ต้องชำระทันที:</span>
+                    <span id="displayTotal" class="total-price">0 บาท</span>
+                </div>
+
+                <div class="bank-info">
+                    <div style="font-size: 1.1rem; margin-bottom: 5px;"><strong>💳 ธนาคารกสิกรไทย</strong></div>
+                    <div style="font-size: 1.2rem; color: var(--primary);">เลขบัญชี: <strong id="accNumber">1961551699</strong></div>
+                    <div style="font-size: 0.95rem; margin-top: 8px;">ชื่อบัญชี: <strong>น.ส.เกสร วรรณปัด และ น.ส.เกศรินทร์ ฉูดกระโทก</strong></div>
+                    <div style="font-size: 0.9rem; color: #555; margin-top: 5px;"><strong>โครงการ:</strong> เพื่อโครงการวิ่งเทรล KHAO CHOMTONG HILL REPEAT</div>
+                    <button type="button" class="copy-btn" onclick="copyToClipboard()">📋 คัดลอกเลขบัญชี</button>
+                    <div id="copyMsg" class="copy-success-msg">คัดลอกสำเร็จ! สามารถวางในแอปธนาคารได้เลย</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>แนบสลิปการโอนเงิน <span class="required">*</span></label>
+                <label for="paymentSlip" class="file-upload-label" id="fileLabel">📸 คลิกเพื่อแนบรูปสลิป</label>
+                <input type="file" id="paymentSlip" name="slip_file" accept="image/*" required>
+            </div>
+
+            <!-- Agreement Checkbox -->
+            <label class="agreement-box" for="agreementCheck">
+                <input type="checkbox" id="agreementCheck" name="agreement" required>
+                <span class="agreement-text">
+                    ข้าพเจ้าขอรับรองว่าข้อมูลข้างต้นเป็นความจริง และข้าพเจ้ามีสุขภาพที่พร้อมสำหรับการเข้าร่วมกิจกรรม 
+                    รวมถึงยินยอมปฏิบัติตามกฎกติกาการแข่งขันทุกประการ
+                </span>
+            </label>
+
+            <button type="submit" class="btn-submit" id="btnSubmit" disabled>ยืนยันการสมัคร</button>
+        </div>
+    </form>
+
+    <div id="statusArea" class="hidden">
+        <h2>ตรวจสอบสถานะการสมัคร</h2>
+        <div class="form-group">
+            <label>เลขบัตรประชาชน 13 หลัก</label>
+            <input type="tel" id="checkId" maxlength="13" placeholder="กรอกเพื่อค้นหา">
+        </div>
+        <button type="button" class="btn-submit" onclick="doCheck()">ค้นหา</button>
+        <div id="checkResult" class="summary-box hidden"></div>
+    </div>
+</div>
+
+<div id="popupOverlay" class="popup-overlay">
+    <div class="popup-content">
+        <div id="popLoader">
+            <h2>กำลังบันทึกข้อมูล...</h2>
+            <p>กรุณารอสักครู่ ระบบกำลังประมวลผลการสมัครของคุณ</p>
+        </div>
+        <div id="popSuccess" class="hidden">
+            <div style="font-size: 50px;">✅</div>
+            <h2>การสมัครเสร็จสมบูรณ์!</h2>
+            <div id="popSummaryDetails" style="text-align: left; background: #f0fdf4; padding: 15px; border-radius: 10px; margin: 15px 0;"></div>
+            <button type="button" class="btn-submit" onclick="location.reload()">กลับหน้าแรก</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // คำแนะนำ: เปลี่ยน WEB_APP_URL ด้านล่างนี้ให้เป็น URL ของคุณที่ได้จาก Google Apps Script
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw_SvDUNbg4l79j5cx7SLEqhAVk0ZYWs7lX8pVt6VUSKecfFJQ1o6_83vWdQHfFG7hu/exec';
+    let currentBasePrice = 0;
+
+    const SIZES = [
+        {id: 'xs', label: 'XS (34")'}, {id: 's', label: 'S (36")'}, {id: 'm', label: 'M (38")'},
+        {id: 'l', label: 'L (40")'}, {id: 'xl', label: 'XL (42")'}, {id: '2xl', label: '2XL (44")'},
+        {id: '3xl', label: '3XL (46")'}, {id: '4xl', label: '4XL (48")'}, {id: '5xl', label: '5XL (50")'}
+    ];
+
+    function renderSizes(containerId, prefix) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = SIZES.map(s => `
+            <div class="shirt-size-item">
+                <input type="radio" id="${prefix}_${s.id}" name="${prefix}_shirt" value="${s.label}">
+                <label for="${prefix}_${s.id}">${s.label}</label>
+            </div>
+        `).join('');
+    }
+
+    renderSizes('soloShirtGrid', 'p1');
+    renderSizes('t1ShirtGrid', 't1');
+    renderSizes('t2ShirtGrid', 't2');
+    renderSizes('t3ShirtGrid', 't3');
+
+    // Agreement Logic
+    const agreementCheck = document.getElementById('agreementCheck');
+    const btnSubmit = document.getElementById('btnSubmit');
+    agreementCheck.addEventListener('change', () => {
+        btnSubmit.disabled = !agreementCheck.checked;
+    });
+
+    function copyToClipboard() {
+        const accNum = document.getElementById('accNumber').innerText;
+        const temp = document.createElement("input");
+        temp.value = accNum;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand("copy");
+        document.body.removeChild(temp);
+        const msg = document.getElementById('copyMsg');
+        msg.style.display = 'block';
+        setTimeout(() => { msg.style.display = 'none'; }, 2000);
+    }
+
+    document.querySelectorAll('input[name="main_menu"]').forEach(radio => {
+        radio.addEventListener('change', e => {
+            const isReg = e.target.value === 'registration';
+            document.getElementById('packageSection').classList.toggle('hidden', !isReg);
+            document.getElementById('registrationForm').classList.toggle('hidden', !isReg);
+            document.getElementById('statusArea').classList.toggle('hidden', isReg);
+        });
+    });
+
+    document.querySelectorAll('input[name="registration_package"]').forEach(radio => {
+        radio.addEventListener('change', e => {
+            const pkg = e.target.value;
+            currentBasePrice = parseInt(e.target.dataset.price);
+            
+            document.getElementById('registrationForm').classList.remove('hidden');
+            document.getElementById('paymentSection').classList.remove('hidden');
+            document.getElementById('summaryPackage').textContent = pkg;
+            document.getElementById('summaryPrice').textContent = currentBasePrice.toLocaleString() + ' บาท';
+            
+            document.getElementById('vipOnlyFields').classList.toggle('hidden', pkg !== 'VIP');
+            document.getElementById('teamNameCommon').classList.toggle('hidden', pkg !== 'Team');
+            document.getElementById('singleEntryForm').classList.toggle('hidden', pkg === 'Team');
+            document.getElementById('teamEntryForm').classList.toggle('hidden', pkg !== 'Team');
+
+            updateCalculations();
+            
+            toggleRequired('.req-s', pkg !== 'Team');
+            toggleRequired('.req-t', pkg === 'Team');
+            if(pkg === 'VIP') document.querySelector('input[name="vehicle_registration"]').required = true;
+            if(pkg === 'Team') document.querySelector('input[name="team_name"]').required = true;
+        });
+    });
+
+    function updateCalculations() {
+        const method = document.querySelector('input[name="payment_method"]:checked').value;
+        const isInstallment = method === 'installment';
+        document.getElementById('installmentCalc').classList.toggle('hidden', !isInstallment);
+        
+        const amountToPay = isInstallment ? (currentBasePrice / 2) : currentBasePrice;
+        document.getElementById('displayTotal').textContent = amountToPay.toLocaleString() + ' บาท';
+        if(isInstallment) {
+            document.getElementById('inst1Text').textContent = amountToPay.toLocaleString() + ' บาท';
+            document.getElementById('inst2Text').textContent = amountToPay.toLocaleString() + ' บาท';
+        }
+    }
+
+    function toggleRequired(selector, isRequired) {
+        document.querySelectorAll(selector).forEach(el => el.required = isRequired);
+    }
+
+    function showMember(n) {
+        document.querySelectorAll('.team-tab-btn').forEach((b, i) => b.classList.toggle('active', i === n-1));
+        document.querySelectorAll('.team-member-form').forEach((f, i) => f.classList.toggle('active', i === n-1));
+    }
+
+    document.getElementById('paymentSlip').addEventListener('change', e => {
+        const file = e.target.files[0];
+        if(file) document.getElementById('fileLabel').textContent = "✅ " + file.name;
+    });
+
+    document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        if (!agreementCheck.checked) {
+            return alert("กรุณากดยอมรับเงื่อนไขการสมัคร");
+        }
+
+        const pkg = document.querySelector('input[name="registration_package"]:checked').value;
+        if(pkg === 'Team') {
+           if(!document.querySelector('input[name="t1_shirt"]:checked') || 
+              !document.querySelector('input[name="t2_shirt"]:checked') || 
+              !document.querySelector('input[name="t3_shirt"]:checked')) {
+               return alert("กรุณาเลือกไซส์เสื้อของสมาชิกทีมให้ครบทุกคน");
+           }
+        } else {
+           if(!document.querySelector('input[name="p1_shirt"]:checked')) {
+               return alert("กรุณาเลือกไซส์เสื้อของคุณ");
+           }
+        }
+
+        const overlay = document.getElementById('popupOverlay');
+        overlay.style.display = 'flex';
+
+        try {
+            const formData = new FormData(this);
+            const file = document.getElementById('paymentSlip').files[0];
+            let base64 = "";
+            if(file) {
+                const reader = new FileReader();
+                base64 = await new Promise(r => {
+                    reader.onload = () => r(reader.result);
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            const payload = Object.fromEntries(formData.entries());
+            payload.slip_base64 = base64;
+            payload.package = pkg;
+            payload.total_price = currentBasePrice;
+
+            // Exponential backoff retry logic for API call
+            const fetchWithRetry = async (url, options, retries = 5, backoff = 1000) => {
+                try {
+                    return await fetch(url, options);
+                } catch (err) {
+                    if (retries <= 0) throw err;
+                    await new Promise(resolve => setTimeout(resolve, backoff));
+                    return fetchWithRetry(url, options, retries - 1, backoff * 2);
+                }
+            };
+
+            await fetchWithRetry(WEB_APP_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify(payload)
+            });
+
+            document.getElementById('popLoader').classList.add('hidden');
+            document.getElementById('popSuccess').classList.remove('hidden');
+            document.getElementById('popSummaryDetails').innerHTML = `
+                <strong>ประเภท:</strong> ${pkg}<br>
+                <strong>ยอดที่ชำระ:</strong> ${document.getElementById('displayTotal').textContent}
+            `;
+        } catch (err) {
+            alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล กรุณาตรวจสอบอินเทอร์เน็ตและลองใหม่อีกครั้ง");
+            overlay.style.display = 'none';
+        }
+    });
+
+    async function doCheck() {
+        const id = document.getElementById('checkId').value;
+        if(id.length < 13) return alert("กรุณากรอกเลขบัตร 13 หลัก");
+        const resBox = document.getElementById('checkResult');
+        resBox.classList.remove('hidden');
+        resBox.innerHTML = "กำลังค้นหา...";
+        try {
+            const r = await fetch(`${WEB_APP_URL}?action=checkStatus&id=${id}`);
+            const data = await r.json();
+            if(data.success) {
+                resBox.innerHTML = `<strong>พบข้อมูล:</strong> ${data.name}<br>สถานะ: ยืนยันการชำระเงินเรียบร้อย`;
+            } else {
+                resBox.innerHTML = "ไม่พบข้อมูลการสมัครในระบบ";
+            }
+        } catch(e) { resBox.innerHTML = "เกิดข้อผิดพลาดในการเชื่อมต่อ"; }
+    }
+</script>
+</body>
+</html>
