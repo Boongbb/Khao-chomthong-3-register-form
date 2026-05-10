@@ -34,7 +34,6 @@
         input[name="main_menu"] { display: none; }
         input[name="main_menu"]:checked + .menu-btn { background: var(--primary); color: white; }
 
-        /* ปรับปรุง Package Grid ให้แคบลง */
         .package-grid { 
             display: grid; 
             grid-template-columns: repeat(3, 1fr); 
@@ -65,9 +64,21 @@
         .shirt-info { margin-top: 10px; text-align: center; font-size: 0.85rem; color: #666; }
 
         .shirt-size-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 6px; margin-top: 10px; }
-        .shirt-size-item input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
-        .shirt-size-item label { display: block; padding: 6px; background: #fff; border: 1px solid var(--border); border-radius: 6px; text-align: center; cursor: pointer; transition: 0.2s; font-size: 0.8rem; }
-        .shirt-size-item input[type="radio"]:checked + label { border-color: var(--secondary); background: #fffaf5; color: var(--secondary); font-weight: 600; }
+        .shirt-size-item input[type="radio"], 
+        .payment-method-item input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+        
+        .shirt-size-item label,
+        .payment-method-item label { 
+            display: block; padding: 10px; background: #fff; border: 1px solid var(--border); border-radius: 8px; 
+            text-align: center; cursor: pointer; transition: 0.2s; font-size: 0.9rem; font-weight: 600;
+        }
+        
+        .shirt-size-item input[type="radio"]:checked + label,
+        .payment-method-item input[type="radio"]:checked + label { 
+            border-color: var(--secondary); background: #fffaf5; color: var(--secondary); box-shadow: 0 0 0 1px var(--secondary);
+        }
+
+        .payment-method-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
 
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .form-group { margin-bottom: 12px; }
@@ -99,21 +110,24 @@
         .btn-submit { width: 100%; padding: 15px; background: var(--accent); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: 0.3s; margin-top: 15px; }
         .btn-submit:disabled { background: #ccc; cursor: not-allowed; }
 
-        .popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 15px; }
-        .popup-content { background: white; padding: 20px; border-radius: 20px; max-width: 500px; width: 100%; text-align: center; max-height: 90vh; overflow-y: auto; }
+        .popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 15px; backdrop-filter: blur(5px); }
+        .popup-content { background: white; padding: 30px; border-radius: 25px; max-width: 480px; width: 100%; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.4); }
+        
+        .pop-summary-card { text-align: left; background: #f8fafc; padding: 20px; border-radius: 18px; margin: 18px 0; border: 1px solid #e2e8f0; }
+        .pop-item { display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; }
+        .pop-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .pop-label { color: #64748b; font-size: 0.85rem; font-weight: 400; }
+        .pop-value { color: #1e293b; font-size: 0.95rem; font-weight: 600; }
+
+        .installment-notice { background: #fffbe6; border: 1px solid #ffe58f; padding: 12px; border-radius: 12px; margin-top: 12px; color: #856404; font-size: 0.85rem; line-height: 1.5; }
+        .email-warning { color: #ef4444; font-size: 0.85rem; margin-top: 15px; font-weight: 600; }
         
         .hidden { display: none; }
         .required { color: red; }
 
         @media (max-width: 600px) { 
-            .package-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; } /* บังคับ 3 คอลัมน์บนมือถือ */
-            .package-card { padding: 10px 4px; }
-            .package-card h4 { font-size: 0.9rem; }
-            .package-card .price { font-size: 0.95rem; }
-            .package-card small { font-size: 0.65rem; }
-            
+            .package-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; } 
             .grid-2 { grid-template-columns: 1fr; } 
-            .shirt-size-grid { grid-template-columns: repeat(3, 1fr); } 
             .main-title { font-size: 1.4rem; }
         }
     </style>
@@ -328,15 +342,21 @@
                 <div class="summary-row"><span>แพ็คเกจ:</span><span id="summaryPackage" style="color:var(--secondary); font-weight:600;">-</span></div>
                 <div class="summary-row"><span>ราคา:</span><span id="summaryPrice">-</span></div>
                 
-                <div class="form-group" style="margin-top:10px;">
-                    <label>การชำระเงิน</label>
-                    <div style="display: flex; gap: 15px; font-size: 0.9rem;">
-                        <label style="cursor:pointer"><input type="radio" name="payment_method" value="full" checked onchange="updateCalculations()"> เต็มจำนวน</label>
-                        <label style="cursor:pointer"><input type="radio" name="payment_method" value="installment" onchange="updateCalculations()"> ผ่อนชำระ (2 งวด)</label>
+                <div class="form-group" style="margin-top:15px;">
+                    <label>การชำระเงิน <span class="required">*</span></label>
+                    <div class="payment-method-grid">
+                        <div class="payment-method-item">
+                            <input type="radio" id="pay_full" name="payment_method" value="full" checked onchange="updateCalculations()">
+                            <label for="pay_full">เต็มจำนวน</label>
+                        </div>
+                        <div class="payment-method-item">
+                            <input type="radio" id="pay_inst" name="payment_method" value="installment" onchange="updateCalculations()">
+                            <label for="pay_inst">ผ่อนชำระ (2 งวด)</label>
+                        </div>
                     </div>
                 </div>
 
-                <div id="installmentCalc" class="hidden" style="background: #fffbe6; padding: 8px; border-radius: 8px; margin-top: 5px; border: 1px solid #ffe58f; font-size: 0.85rem;">
+                <div id="installmentCalc" class="hidden" style="background: #fffbe6; padding: 12px; border-radius: 12px; margin-top: 5px; border: 1px solid #ffe58f; font-size: 0.85rem;">
                     <div class="summary-row"><span>งวดที่ 1 (วันนี้ 50%):</span> <strong id="inst1Text">0 บาท</strong></div>
                     <div class="summary-row"><span>งวดที่ 2 (ภายใน 30 วัน):</span> <strong id="inst2Text">0 บาท</strong></div>
                 </div>
@@ -390,10 +410,17 @@
             <div id="progressStatus" style="margin-top: 10px; color: var(--secondary); font-weight: bold;"></div>
         </div>
         <div id="popSuccess" class="hidden">
-            <div style="font-size: 40px;">✅</div>
-            <h2>สมัครสำเร็จ!</h2>
-            <div id="popSummaryDetails" style="text-align: left; background: #f8fafc; padding: 15px; border-radius: 12px; margin: 15px 0; font-size: 0.9rem;"></div>
-            <button type="button" class="btn-submit" onclick="location.reload()">ตกลง</button>
+            <div style="font-size: 50px; margin-bottom: 10px;">✅</div>
+            <h2 style="color: var(--accent); margin: 0;">สมัครเข้าร่วมสำเร็จ!</h2>
+            
+            <div class="pop-summary-card" id="popSummaryDetails">
+            </div>
+
+            <div class="email-warning">
+                ⚠️ โปรดตรวจสอบ Inbox หรือ Junk Mail เพื่อรับอีเมลยืนยัน
+            </div>
+            
+            <button type="button" class="btn-submit" onclick="location.reload()" style="margin-top: 20px;">กลับหน้าหลัก</button>
         </div>
     </div>
 </div>
@@ -410,6 +437,7 @@
 
     function renderSizes(containerId, prefix) {
         const container = document.getElementById(containerId);
+        if(!container) return;
         container.innerHTML = SIZES.map(s => `
             <div class="shirt-size-item">
                 <input type="radio" id="${prefix}_${s.id}" name="${prefix}_shirt" value="${s.label}">
@@ -470,7 +498,9 @@
     });
 
     function updateCalculations() {
-        const method = document.querySelector('input[name="payment_method"]:checked').value;
+        const methodEl = document.querySelector('input[name="payment_method"]:checked');
+        if(!methodEl) return;
+        const method = methodEl.value;
         const isInstallment = method === 'installment';
         document.getElementById('installmentCalc').classList.toggle('hidden', !isInstallment);
         const amountToPay = isInstallment ? (currentBasePrice / 2) : currentBasePrice;
@@ -515,6 +545,7 @@
     document.getElementById('registrationForm').addEventListener('submit', async function(e) {
         e.preventDefault();
         const pkg = document.querySelector('input[name="registration_package"]:checked').value;
+        const method = document.querySelector('input[name="payment_method"]:checked').value;
         const overlay = document.getElementById('popupOverlay');
         const progress = document.getElementById('progressStatus');
         overlay.style.display = 'flex';
@@ -529,7 +560,6 @@
             payload.package = pkg;
             payload.total_price = currentBasePrice;
 
-            // Handle Formatting (Phone gets quote, ID stays normal)
             if (pkg === 'Team') {
                 payload.t1_phone = "'" + payload.t1_phone;
                 payload.t2_phone = "'" + payload.t2_phone;
@@ -544,8 +574,32 @@
             setTimeout(() => {
                 document.getElementById('popLoader').classList.add('hidden');
                 document.getElementById('popSuccess').classList.remove('hidden');
+                
+                const d = new Date();
+                d.setDate(d.getDate() + 30);
+                const dateString = d.toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' });
+                
                 const fname = pkg === 'Team' ? payload.t1_fname : payload.p1_first_name;
-                document.getElementById('popSummaryDetails').innerHTML = `<b>ผู้สมัคร:</b> ${fname}<br><b>ประเภท:</b> ${pkg}<br><b>ยอดที่ชำระ:</b> ${document.getElementById('displayTotal').textContent}`;
+                const lname = pkg === 'Team' ? payload.t1_lname : payload.p1_last_name;
+                const paidAmt = document.getElementById('displayTotal').textContent;
+
+                let summaryHtml = `
+                    <div class="pop-item"><span class="pop-label">ชื่อผู้สมัคร:</span> <span class="pop-value">${fname} ${lname}</span></div>
+                    <div class="pop-item"><span class="pop-label">แพ็คเกจ:</span> <span class="pop-value">${pkg}</span></div>
+                    <div class="pop-item"><span class="pop-label">ยอดที่ชำระจริง:</span> <span class="pop-value" style="color:var(--accent)">${paidAmt}</span></div>
+                `;
+
+                if(method === 'installment') {
+                    summaryHtml += `
+                        <div class="installment-notice">
+                            🕒 <b>ข้อมูลการผ่อนชำระ:</b><br>
+                            กรุณาชำระเงินงวดที่ 2 (ส่วนที่เหลือ) <br>
+                            ภายในวันที่: <b>${dateString}</b>
+                        </div>
+                    `;
+                }
+
+                document.getElementById('popSummaryDetails').innerHTML = summaryHtml;
             }, 2000);
         } catch (err) {
             alert("Error: " + err.message);
