@@ -13,58 +13,64 @@
             --bg: #f4f7f6;
             --white: #ffffff;
             --border: #dcdde1;
-            --info: #3498db;
             --event-green: #2d5a27;
         }
 
         * { box-sizing: border-box; font-family: 'Kanit', sans-serif; }
-        body { background: var(--bg); color: var(--primary); margin: 0; padding: 10px; line-height: 1.6; }
-        .container { max-width: 850px; margin: 0 auto; background: var(--white); padding: 20px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        body { background: var(--bg); color: var(--primary); margin: 0; padding: 20px; line-height: 1.6; }
+        .container { max-width: 850px; margin: 0 auto; background: var(--white); padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         
-        .header-section { text-align: center; margin-bottom: 20px; }
-        .main-title { color: var(--event-green); font-size: 1.8rem; font-weight: 600; margin: 0; }
+        .header-section { text-align: center; margin-bottom: 30px; }
+        .main-title { color: var(--event-green); font-size: 2.2rem; font-weight: 600; margin: 0; }
+        .sub-title { color: var(--event-green); font-size: 1.2rem; opacity: 0.8; }
         
         h2, h3 { text-align: center; color: var(--primary); }
         h3 { border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 30px; text-align: left; font-size: 1.2rem; color: var(--secondary); }
         
-        .main-menu { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
-        .menu-btn { padding: 10px 20px; border: 2px solid var(--primary); border-radius: 30px; cursor: pointer; transition: 0.3s; font-weight: 600; }
+        .main-menu { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; }
+        .menu-btn { padding: 12px 25px; border: 2px solid var(--primary); border-radius: 30px; cursor: pointer; font-weight: 600; }
         input[name="main_menu"] { display: none; }
         input[name="main_menu"]:checked + .menu-btn { background: var(--primary); color: white; }
 
-        .package-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 20px; }
-        .package-card { border: 2px solid #eee; padding: 15px; border-radius: 12px; text-align: center; cursor: pointer; }
+        .package-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .package-card { border: 2px solid #eee; padding: 20px; border-radius: 12px; text-align: center; cursor: pointer; transition: 0.3s; }
         input[name="registration_package"] { display: none; }
-        input[name="registration_package"]:checked + .package-card { border-color: var(--secondary); background: #fffaf5; }
+        input[name="registration_package"]:checked + .package-card { border-color: var(--secondary); background: #fffaf5; transform: translateY(-5px); }
+        .package-card h4 { margin: 0; color: var(--secondary); font-size: 1.3rem; }
+        .package-card .price { font-size: 1.5rem; font-weight: bold; margin: 10px 0; }
 
-        .form-group { margin-bottom: 12px; }
-        label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; }
-        input, select, textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.95rem; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; }
 
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         
-        .shirt-size-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 5px; }
+        .shirt-size-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px; margin-top: 10px; }
         .shirt-size-item input { display: none; }
-        .shirt-size-item label { display: block; padding: 8px; border: 1px solid var(--border); border-radius: 6px; text-align: center; cursor: pointer; font-size: 0.8rem; }
+        .shirt-size-item label { display: block; padding: 8px; border: 1px solid var(--border); border-radius: 6px; text-align: center; cursor: pointer; }
         .shirt-size-item input:checked + label { background: var(--secondary); color: white; border-color: var(--secondary); }
 
-        .team-tabs { display: flex; gap: 5px; margin-bottom: 10px; overflow-x: auto; }
-        .team-tab-btn { padding: 10px; cursor: pointer; border-radius: 8px; background: #eee; border: none; flex: 1; min-width: 80px; }
+        .team-tabs { display: flex; gap: 5px; margin: 20px 0; overflow-x: auto; }
+        .team-tab-btn { padding: 12px 15px; cursor: pointer; border-radius: 8px; background: #eee; border: none; font-weight: 600; flex: 1; min-width: 100px; }
         .team-tab-btn.active { background: var(--primary); color: white; }
-        .team-member-form { display: none; padding: 15px; border: 1px solid #eee; border-radius: 8px; background: #fafafa; }
+        .team-member-form { display: none; padding: 20px; border: 1px solid #eee; border-radius: 8px; background: #fafafa; }
         .team-member-form.active { display: block; }
 
-        .summary-box { background: #f9f9f9; padding: 20px; border-radius: 12px; border-left: 5px solid var(--accent); margin-top: 20px; }
+        .summary-box { background: #f9f9f9; padding: 20px; border-radius: 12px; border-left: 5px solid var(--accent); margin: 30px 0; }
         .total-price { color: var(--accent); font-size: 1.4rem; font-weight: 600; }
         
-        .btn-submit { width: 100%; padding: 15px; background: var(--accent); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: 600; cursor: pointer; margin-top: 20px; }
+        .bank-info { background: #eff3f6; padding: 15px; border-radius: 10px; text-align: center; margin-top: 10px; }
+        .file-upload-label { display: block; padding: 30px; border: 2px dashed #ccc; border-radius: 12px; text-align: center; cursor: pointer; margin-top: 10px; }
+        
+        .btn-submit { width: 100%; padding: 18px; background: var(--accent); color: white; border: none; border-radius: 10px; font-size: 1.2rem; font-weight: 600; cursor: pointer; }
         .btn-submit:disabled { background: #ccc; }
 
         .popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 1000; }
-        .popup-content { background: white; padding: 30px; border-radius: 20px; max-width: 90%; text-align: center; }
+        .popup-content { background: white; padding: 30px; border-radius: 20px; max-width: 500px; width: 90%; text-align: center; }
         
         .hidden { display: none; }
         .required { color: red; }
+        @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -72,6 +78,7 @@
 <div class="container">
     <div class="header-section">
         <h1 class="main-title">Khao Chomthong Hill Repeat #3</h1>
+        <div class="sub-title">The Deep Green</div>
     </div>
 
     <div class="main-menu">
@@ -82,25 +89,25 @@
     <div id="packageSection">
         <h2>เลือกประเภทการสมัคร</h2>
         <div class="package-grid">
-            <label><input type="radio" name="registration_package" value="Solo" data-price="899"><div class="package-card"><h4>Solo</h4><div>899.-</div></div></label>
-            <label><input type="radio" name="registration_package" value="VIP" data-price="1999"><div class="package-card"><h4>VIP</h4><div>1,999.-</div></div></label>
-            <label><input type="radio" name="registration_package" value="Team" data-price="2499"><div class="package-card"><h4>Team</h4><div>2,499.-</div></div></label>
+            <label><input type="radio" name="registration_package" value="Solo" data-price="899"><div class="package-card"><h4>Solo</h4><div class="price">899.-</div></div></label>
+            <label><input type="radio" name="registration_package" value="VIP" data-price="1999"><div class="package-card"><h4>VIP</h4><div class="price">1,999.-</div></div></label>
+            <label><input type="radio" name="registration_package" value="Team" data-price="2499"><div class="package-card"><h4>Team</h4><div class="price">2,499.-</div></div></label>
         </div>
     </div>
 
     <form id="registrationForm" class="hidden">
         <input type="hidden" name="slip_base64" id="slip_base64_input">
         
-        <div id="teamNameCommon" class="form-group hidden">
-            <label>ชื่อทีม <span class="required">*</span></label>
-            <input type="text" name="team_name">
-        </div>
         <div id="vipOnlyFields" class="form-group hidden">
             <label>หมายเลขทะเบียนรถ (เฉพาะ VIP) <span class="required">*</span></label>
-            <input type="text" name="vehicle_registration">
+            <input type="text" name="vehicle_registration" placeholder="ตัวอย่าง: กข 1234 นครราชสีมา">
         </div>
 
-        <!-- Solo / VIP Form Content -->
+        <div id="teamNameCommon" class="form-group hidden">
+            <label>ชื่อทีม <span class="required">*</span></label>
+            <input type="text" name="team_name" placeholder="ระบุชื่อทีมของคุณ">
+        </div>
+
         <div id="singleEntryForm" class="hidden">
             <h3>ข้อมูลผู้สมัคร</h3>
             <div class="grid-2">
@@ -112,25 +119,10 @@
                 <div class="form-group"><label>เบอร์โทรศัพท์ <span class="required">*</span></label><input type="tel" name="p1_phone" maxlength="10" class="req-s"></div>
             </div>
             <div class="form-group"><label>อีเมล <span class="required">*</span></label><input type="email" name="p1_email" class="req-s"></div>
-            <div class="grid-2">
-                <div class="form-group"><label>วันเกิด <span class="required">*</span></label><input type="date" name="p1_dob" class="req-s"></div>
-                <div class="form-group"><label>กรุ๊ปเลือด <span class="required">*</span></label>
-                    <select name="p1_blood" class="req-s">
-                        <option value="">เลือก</option><option value="A">A</option><option value="B">B</option><option value="O">O</option><option value="AB">AB</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group"><label>ที่อยู่ <span class="required">*</span></label><textarea name="p1_address" rows="2" class="req-s"></textarea></div>
-            <div class="form-group"><label>โรคประจำตัว/แพ้ยา</label><input type="text" name="p1_health"></div>
-            <div class="grid-2">
-                <div class="form-group"><label>ชื่อผู้ติดต่อฉุกเฉิน <span class="required">*</span></label><input type="text" name="p1_em_name" class="req-s"></div>
-                <div class="form-group"><label>เบอร์โทรฉุกเฉิน <span class="required">*</span></label><input type="tel" name="p1_em_phone" class="req-s"></div>
-            </div>
             <label>ไซส์เสื้อ <span class="required">*</span></label>
             <div class="shirt-size-grid" id="soloShirtGrid"></div>
         </div>
 
-        <!-- Team Form Content (Minified for space but fully functional) -->
         <div id="teamEntryForm" class="hidden">
             <h3>ข้อมูลสมาชิกในทีม</h3>
             <div class="team-tabs">
@@ -138,29 +130,44 @@
                 <button type="button" class="team-tab-btn" onclick="showMember(2)">คนที่ 2</button>
                 <button type="button" class="team-tab-btn" onclick="showMember(3)">คนที่ 3</button>
             </div>
+            <!-- Member 1 -->
             <div id="m1" class="team-member-form active">
                 <div class="grid-2">
                     <div class="form-group"><label>ชื่อ</label><input type="text" name="t1_fname" class="req-t"></div>
                     <div class="form-group"><label>นามสกุล</label><input type="text" name="t1_lname" class="req-t"></div>
                 </div>
-                <div class="form-group"><label>บัตรประชาชน</label><input type="tel" name="t1_id" class="req-t"></div>
-                <div class="form-group"><label>อีเมลหัวหน้าทีม</label><input type="email" name="t1_email" class="req-t"></div>
+                <div class="grid-2">
+                    <div class="form-group"><label>บัตรประชาชน</label><input type="tel" name="t1_id" class="req-t"></div>
+                    <div class="form-group"><label>เบอร์โทร</label><input type="tel" name="t1_phone" class="req-t"></div>
+                </div>
+                <div class="form-group"><label>อีเมล (หัวหน้าทีม)</label><input type="email" name="t1_email" class="req-t"></div>
+                <label>ไซส์เสื้อ <span class="required">*</span></label>
                 <div class="shirt-size-grid" id="t1ShirtGrid"></div>
             </div>
+            <!-- Member 2 -->
             <div id="m2" class="team-member-form">
                 <div class="grid-2">
                     <div class="form-group"><label>ชื่อ</label><input type="text" name="t2_fname" class="req-t"></div>
                     <div class="form-group"><label>นามสกุล</label><input type="text" name="t2_lname" class="req-t"></div>
                 </div>
-                <div class="form-group"><label>บัตรประชาชน</label><input type="tel" name="t2_id" class="req-t"></div>
+                <div class="grid-2">
+                    <div class="form-group"><label>บัตรประชาชน</label><input type="tel" name="t2_id" class="req-t"></div>
+                    <div class="form-group"><label>เบอร์โทร</label><input type="tel" name="t2_phone" class="req-t"></div>
+                </div>
+                <label>ไซส์เสื้อ <span class="required">*</span></label>
                 <div class="shirt-size-grid" id="t2ShirtGrid"></div>
             </div>
+            <!-- Member 3 -->
             <div id="m3" class="team-member-form">
                 <div class="grid-2">
                     <div class="form-group"><label>ชื่อ</label><input type="text" name="t3_fname" class="req-t"></div>
                     <div class="form-group"><label>นามสกุล</label><input type="text" name="t3_lname" class="req-t"></div>
                 </div>
-                <div class="form-group"><label>บัตรประชาชน</label><input type="tel" name="t3_id" class="req-t"></div>
+                <div class="grid-2">
+                    <div class="form-group"><label>บัตรประชาชน</label><input type="tel" name="t3_id" class="req-t"></div>
+                    <div class="form-group"><label>เบอร์โทร</label><input type="tel" name="t3_phone" class="req-t"></div>
+                </div>
+                <label>ไซส์เสื้อ <span class="required">*</span></label>
                 <div class="shirt-size-grid" id="t3ShirtGrid"></div>
             </div>
         </div>
@@ -168,50 +175,58 @@
         <div id="paymentSection" class="hidden">
             <div class="summary-box">
                 <div class="form-group"><label>เลือกวิธีชำระเงิน</label>
-                    <select name="payment_method" onchange="updateCalc()">
+                    <select name="payment_method" onchange="updateCalculations()">
                         <option value="full">ชำระเต็มจำนวน</option>
                         <option value="installment">มัดจำ 50% (ผ่อนงวดที่ 1)</option>
                     </select>
                 </div>
-                <div class="total-price" id="priceLabel">ยอดโอน: 0 บาท</div>
-                <p style="font-size:0.8rem; color:#666;">กสิกรไทย 1961551699 (เกสร วรรณปัด)</p>
+                <div id="displayTotal" class="total-price">ยอดชำระ: 0 บาท</div>
+                <div class="bank-info">
+                    <p>กสิกรไทย: <strong>1961551699</strong><br>ชื่อบัญชี: เกสร วรรณปัด และ เกศรินทร์ ฉูดกระโทก</p>
+                </div>
             </div>
             <div class="form-group">
                 <label>แนบสลิป <span class="required">*</span></label>
+                <label for="paymentSlip" class="file-upload-label" id="fileLabel">📸 คลิกเพื่อแนบรูปสลิป</label>
                 <input type="file" id="paymentSlip" accept="image/*" required>
             </div>
-            <label><input type="checkbox" id="agree" required> ยอมรับเงื่อนไขการแข่งขัน</label>
-            <button type="submit" class="btn-submit" id="submitBtn" disabled>ยืนยันการสมัคร</button>
+            <label><input type="checkbox" id="agreementCheck" required> ยอมรับกฎกติกาการแข่งขัน</label>
+            <button type="submit" class="btn-submit" id="btnSubmit" disabled>ยืนยันและส่งข้อมูลการสมัคร</button>
         </div>
     </form>
 </div>
 
-<div id="popup" class="popup-overlay">
+<div id="popupOverlay" class="popup-overlay">
     <div class="popup-content">
-        <h2 id="st">กำลังดำเนินการ...</h2>
-        <p id="sm">กรุณารอสักครู่ ระบบกำลังนำข้อมูลของคุณเข้าสู่ระบบ</p>
-        <button class="btn-submit hidden" id="ok" onclick="location.reload()">กลับหน้าหลัก</button>
+        <h2 id="popStatus">กำลังประมวลผล...</h2>
+        <p id="popMsg">กรุณารอสักครู่ ห้ามปิดหน้าต่างนี้</p>
+        <button type="button" id="closePop" class="btn-submit hidden" onclick="location.reload()">เรียบร้อย</button>
     </div>
 </div>
 
 <script>
     const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw_SvDUNbg4l79j5cx7SLEqhAVk0ZYWs7lX8pVt6VUSKecfFJQ1o6_83vWdQHfFG7hu/exec';
+    let currentBasePrice = 0;
     const SIZES = ['XS','S','M','L','XL','2XL','3XL','4XL','5XL'];
-    let basePrice = 0;
 
     function renderSizes(containerId, prefix) {
         document.getElementById(containerId).innerHTML = SIZES.map(s => `
             <div class="shirt-size-item">
-                <input type="radio" id="${prefix}_${s}" name="${prefix}_shirt" value="${s}" class="${prefix === 'p1' ? 'req-s' : 'req-t'}">
+                <input type="radio" id="${prefix}_${s}" name="${prefix}_shirt" value="${s}" required>
                 <label for="${prefix}_${s}">${s}</label>
             </div>
         `).join('');
     }
+
     ['soloShirtGrid','t1ShirtGrid','t2ShirtGrid','t3ShirtGrid'].forEach((id,i)=>renderSizes(id, i===0?'p1':'t'+i));
 
-    document.querySelectorAll('input[name="registration_package"]').forEach(r => {
-        r.onchange = e => {
-            basePrice = parseInt(e.target.dataset.price);
+    document.getElementById('agreementCheck').onchange = function() { 
+        document.getElementById('btnSubmit').disabled = !this.checked; 
+    };
+
+    document.querySelectorAll('input[name="registration_package"]').forEach(radio => {
+        radio.onchange = e => {
+            currentBasePrice = parseInt(e.target.dataset.price);
             const pkg = e.target.value;
             document.getElementById('registrationForm').classList.remove('hidden');
             document.getElementById('paymentSection').classList.remove('hidden');
@@ -219,15 +234,17 @@
             document.getElementById('teamNameCommon').classList.toggle('hidden', pkg !== 'Team');
             document.getElementById('singleEntryForm').classList.toggle('hidden', pkg === 'Team');
             document.getElementById('teamEntryForm').classList.toggle('hidden', pkg !== 'Team');
-            updateCalc();
+            updateCalculations();
+            
+            // ปรับ Required ของฟิลด์ตามแพ็กเกจ
             document.querySelectorAll('.req-s').forEach(el => el.required = pkg !== 'Team');
             document.querySelectorAll('.req-t').forEach(el => el.required = pkg === 'Team');
         };
     });
 
-    function updateCalc() {
-        const isHalf = document.querySelector('select[name="payment_method"]').value === 'installment';
-        document.getElementById('priceLabel').innerText = `ยอดโอน: ${(isHalf ? basePrice/2 : basePrice).toLocaleString()} บาท`;
+    function updateCalculations() {
+        const isInstall = document.querySelector('select[name="payment_method"]').value === 'installment';
+        document.getElementById('displayTotal').textContent = `ยอดชำระ: ${(isInstall ? currentBasePrice/2 : currentBasePrice).toLocaleString()} บาท`;
     }
 
     function showMember(n) {
@@ -235,11 +252,13 @@
         document.querySelectorAll('.team-member-form').forEach((f,i)=>f.classList.toggle('active', i===n-1));
     }
 
-    document.getElementById('agree').onchange = function() { document.getElementById('submitBtn').disabled = !this.checked; };
+    document.getElementById('paymentSlip').onchange = e => { 
+        if(e.target.files[0]) document.getElementById('fileLabel').textContent = "✅ " + e.target.files[0].name;
+    };
 
-    // ปรับปรุงฟังก์ชันแปลงรูปภาพให้เสถียรขึ้น
-    async function processImage(file) {
-        return new Promise((resolve, reject) => {
+    // ฟังก์ชันย่อขนาดภาพ
+    async function resizeImage(file) {
+        return new Promise((resolve) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = (e) => {
@@ -247,59 +266,56 @@
                 img.src = e.target.result;
                 img.onload = () => {
                     const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 800;
+                    let width = img.width;
+                    let height = img.height;
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
                     const ctx = canvas.getContext('2d');
-                    // ย่อให้เหลือความกว้าง 800px
-                    const scale = 800 / img.width;
-                    canvas.width = 800;
-                    canvas.height = img.height * scale;
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0, width, height);
                     resolve(canvas.toDataURL('image/jpeg', 0.6));
                 };
-                img.onerror = () => reject("Error loading image");
             };
-            reader.onerror = () => reject("Error reading file");
         });
     }
 
     document.getElementById('registrationForm').onsubmit = async function(e) {
         e.preventDefault();
-        const popup = document.getElementById('popup');
-        const st = document.getElementById('st');
-        const sm = document.getElementById('sm');
-        
-        popup.style.display = 'flex';
-        st.innerText = "กำลังประมวลผลรูปภาพ...";
+        const overlay = document.getElementById('popupOverlay');
+        overlay.style.display = 'flex';
         
         try {
             const file = document.getElementById('paymentSlip').files[0];
             if (file) {
-                const base64 = await processImage(file);
+                document.getElementById('popStatus').textContent = "กำลังย่อขนาดรูปภาพ...";
+                const base64 = await resizeImage(file);
                 document.getElementById('slip_base64_input').value = base64;
             }
 
-            st.innerText = "กำลังส่งข้อมูล...";
-            sm.innerText = "ห้ามปิดหน้าต่างนี้ ระบบกำลังบันทึกลง Google Sheet";
-            
+            document.getElementById('popStatus').textContent = "กำลังส่งข้อมูล...";
             const formData = new FormData(this);
             const payload = Object.fromEntries(formData.entries());
             payload.package = document.querySelector('input[name="registration_package"]:checked').value;
-            payload.total_price = basePrice;
-            
-            await fetch(WEB_APP_URL, {
+            payload.total_price = currentBasePrice;
+
+            const response = await fetch(WEB_APP_URL, {
                 method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'text/plain' },
+                mode: 'no-cors', // สำคัญสำหรับ GAS
                 body: JSON.stringify(payload)
             });
 
-            st.innerText = "✅ สำเร็จ!";
-            sm.innerText = "ส่งข้อมูลเรียบร้อยแล้ว แอดมินจะตรวจสอบและยืนยันใน 24 ชม.";
-            document.getElementById('ok').classList.remove('hidden');
+            document.getElementById('popStatus').textContent = "✅ สมัครสำเร็จ!";
+            document.getElementById('popMsg').textContent = "ข้อมูลของคุณถูกบันทึกและระบบได้ส่งอีเมลยืนยันให้คุณแล้ว";
+            document.getElementById('closePop').classList.remove('hidden');
         } catch (err) {
-            st.innerText = "❌ เกิดข้อผิดพลาด";
-            sm.innerText = err.message;
-            document.getElementById('ok').classList.remove('hidden');
-            document.getElementById('ok').innerText = "ลองใหม่";
+            document.getElementById('popStatus').textContent = "❌ ผิดพลาด";
+            document.getElementById('popMsg').textContent = err.message;
+            document.getElementById('closePop').classList.remove('hidden');
+            document.getElementById('closePop').textContent = "ลองใหม่";
         }
     };
 </script>
