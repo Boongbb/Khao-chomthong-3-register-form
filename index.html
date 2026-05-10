@@ -89,6 +89,13 @@
         .popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
         .popup-content { background: white; padding: 30px; border-radius: 20px; max-width: 550px; width: 100%; text-align: center; position: relative; max-height: 90vh; overflow-y: auto; }
         
+        /* สไตล์เพิ่มเติมสำหรับรายละเอียดใน Popup */
+        .pop-detail-item { display: flex; justify-content: space-between; margin-bottom: 5px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; }
+        .pop-detail-item:last-child { border-bottom: none; }
+        .pop-label { color: #64748b; font-size: 0.9rem; }
+        .pop-value { font-weight: 600; color: #1e293b; }
+        .pop-note { margin-top: 15px; font-size: 0.85rem; color: #ef4444; font-weight: 500; }
+
         .hidden { display: none; }
         .required { color: red; }
         @media (max-width: 600px) { 
@@ -382,14 +389,19 @@
         <div id="popSuccess" class="hidden">
             <div style="font-size: 50px;">✅</div>
             <h2>การสมัครเสร็จสมบูรณ์!</h2>
-            <div id="popSummaryDetails" style="text-align: left; background: #f0fdf4; padding: 15px; border-radius: 10px; margin: 15px 0;"></div>
+            <div id="popSummaryDetails" style="text-align: left; background: #f8fafc; padding: 20px; border-radius: 15px; margin: 20px 0; border: 1px solid #e2e8f0;">
+                <!-- รายละเอียดจะถูกใส่ที่นี่ด้วย JS -->
+            </div>
+            <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 20px;">
+                📍 ระบบได้ส่งอีเมลยืนยันให้คุณแล้ว <br>
+                กรุณาตรวจสอบใน <b>Inbox</b> หรือ <b>Junk Mail (อีเมลขยะ)</b>
+            </p>
             <button type="button" class="btn-submit" onclick="location.reload()">กลับหน้าแรก</button>
         </div>
     </div>
 </div>
 
 <script>
-    // คำแนะนำ: เปลี่ยน WEB_APP_URL ด้านล่างนี้ให้เป็น URL ของคุณที่ได้จาก Google Apps Script
     const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw_SvDUNbg4l79j5cx7SLEqhAVk0ZYWs7lX8pVt6VUSKecfFJQ1o6_83vWdQHfFG7hu/exec';
     let currentBasePrice = 0;
 
@@ -414,7 +426,6 @@
     renderSizes('t2ShirtGrid', 't2');
     renderSizes('t3ShirtGrid', 't3');
 
-    // Agreement Logic
     const agreementCheck = document.getElementById('agreementCheck');
     const btnSubmit = document.getElementById('btnSubmit');
     agreementCheck.addEventListener('change', () => {
@@ -534,30 +545,48 @@
             payload.package = pkg;
             payload.total_price = currentBasePrice;
 
-            // Exponential backoff retry logic for API call
-            const fetchWithRetry = async (url, options, retries = 5, backoff = 1000) => {
-                try {
-                    return await fetch(url, options);
-                } catch (err) {
-                    if (retries <= 0) throw err;
-                    await new Promise(resolve => setTimeout(resolve, backoff));
-                    return fetchWithRetry(url, options, retries - 1, backoff * 2);
-                }
-            };
-
-            await fetchWithRetry(WEB_APP_URL, {
+            // ส่งข้อมูลไปยัง GAS
+            await fetch(WEB_APP_URL, {
                 method: 'POST',
                 mode: 'no-cors',
                 body: JSON.stringify(payload)
             });
 
+            // คำนวณวันที่สำหรับงวดที่ 2 (วันนี้ + 30 วัน)
+            const today = new Date();
+            today.setDate(today.getDate() + 30);
+            const deadline = today.toLocaleDateString('th-TH', { 
+                year: 'numeric', month: 'long', day: 'numeric' 
+            });
+
+            // ดึงชื่อผู้สมัคร
+            const firstName = pkg === 'Team' ? payload.t1_fname : payload.p1_first_name;
+            const lastName = pkg === 'Team' ? payload.t1_lname : payload.p1_last_name;
+            const method = payload.payment_method;
+            const paidAmount = document.getElementById('displayTotal').textContent;
+
+            // อัปเดตรายละเอียดใน Popup
+            let summaryHTML = `
+                <div class="pop-detail-item"><span class="pop-label">ชื่อผู้สมัคร:</span> <span class="pop-value">คุณ ${firstName} ${lastName}</span></div>
+                <div class="pop-detail-item"><span class="pop-label">ประเภท:</span> <span class="pop-value">${pkg}</span></div>
+                <div class="pop-detail-item"><span class="pop-label">ยอดที่ชำระแล้ว:</span> <span class="pop-value" style="color:var(--accent)">${paidAmount}</span></div>
+            `;
+
+            if(method === 'installment') {
+                summaryHTML += `
+                    <div class="pop-detail-item" style="background:#fffbe6; padding: 5px; margin-top:10px; border-radius:5px;">
+                        <span class="pop-label" style="color:#856404">กำหนดชำระงวดที่ 2:</span> 
+                        <span class="pop-value" style="color:#856404">${deadline}</span>
+                    </div>
+                `;
+            }
+
             document.getElementById('popLoader').classList.add('hidden');
             document.getElementById('popSuccess').classList.remove('hidden');
-            document.getElementById('popSummaryDetails').innerHTML = `
-                <strong>ประเภท:</strong> ${pkg}<br>
-                <strong>ยอดที่ชำระ:</strong> ${document.getElementById('displayTotal').textContent}
-            `;
+            document.getElementById('popSummaryDetails').innerHTML = summaryHTML;
+
         } catch (err) {
+            console.error(err);
             alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล กรุณาตรวจสอบอินเทอร์เน็ตและลองใหม่อีกครั้ง");
             overlay.style.display = 'none';
         }
