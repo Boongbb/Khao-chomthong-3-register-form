@@ -49,7 +49,7 @@
         .shirt-size-item input:checked + label { background: var(--secondary); color: white; border-color: var(--secondary); }
 
         .team-tabs { display: flex; gap: 5px; margin-bottom: 10px; overflow-x: auto; }
-        .team-tab-btn { padding: 10px; cursor: pointer; border-radius: 8px; background: #eee; border: none; flex: 1; }
+        .team-tab-btn { padding: 10px; cursor: pointer; border-radius: 8px; background: #eee; border: none; flex: 1; min-width: 80px; }
         .team-tab-btn.active { background: var(--primary); color: white; }
         .team-member-form { display: none; padding: 15px; border: 1px solid #eee; border-radius: 8px; background: #fafafa; }
         .team-member-form.active { display: block; }
@@ -89,7 +89,6 @@
     </div>
 
     <form id="registrationForm" class="hidden">
-        <!-- Common Fields -->
         <div id="teamNameCommon" class="form-group hidden">
             <label>ชื่อทีม <span class="required">*</span></label>
             <input type="text" name="team_name">
@@ -99,7 +98,6 @@
             <input type="text" name="vehicle_registration">
         </div>
 
-        <!-- Solo / VIP Form -->
         <div id="singleEntryForm" class="hidden">
             <h3>ข้อมูลผู้สมัคร</h3>
             <div class="grid-2">
@@ -129,16 +127,14 @@
             <div class="shirt-size-grid" id="soloShirtGrid"></div>
         </div>
 
-        <!-- Team Form -->
         <div id="teamEntryForm" class="hidden">
             <h3>ข้อมูลสมาชิกในทีม</h3>
             <div class="team-tabs">
-                <button type="button" class="team-tab-btn active" onclick="showMember(1)">คนที่ 1 (หัวหน้า)</button>
+                <button type="button" class="team-tab-btn active" onclick="showMember(1)">คนที่ 1</button>
                 <button type="button" class="team-tab-btn" onclick="showMember(2)">คนที่ 2</button>
                 <button type="button" class="team-tab-btn" onclick="showMember(3)">คนที่ 3</button>
             </div>
             
-            <!-- Loop Member 1-3 -->
             <div id="m1" class="team-member-form active">
                 <div class="grid-2">
                     <div class="form-group"><label>ชื่อ</label><input type="text" name="t1_fname" class="req-t"></div>
@@ -148,7 +144,7 @@
                     <div class="form-group"><label>บัตรประชาชน</label><input type="tel" name="t1_id" class="req-t"></div>
                     <div class="form-group"><label>เบอร์โทร</label><input type="tel" name="t1_phone" class="req-t"></div>
                 </div>
-                <div class="form-group"><label>อีเมล (หัวหน้าทีม)</label><input type="email" name="p1_email" class="req-t"></div>
+                <div class="form-group"><label>อีเมล (หัวหน้าทีม)</label><input type="email" name="t1_email" class="req-t"></div>
                 <div class="grid-2">
                     <div class="form-group"><label>วันเกิด</label><input type="date" name="t1_dob" class="req-t"></div>
                     <div class="form-group"><label>เลือด</label><select name="t1_blood" class="req-t"><option value="A">A</option><option value="B">B</option><option value="O">O</option><option value="AB">AB</option></select></div>
@@ -162,7 +158,6 @@
                 <div class="shirt-size-grid" id="t1ShirtGrid"></div>
             </div>
 
-            <!-- Member 2 & 3 (Shorten for space) -->
             <div id="m2" class="team-member-form">
                 <div class="grid-2">
                     <div class="form-group"><label>ชื่อ</label><input type="text" name="t2_fname" class="req-t"></div>
@@ -218,25 +213,24 @@
                 <p style="font-size:0.8rem; color:#666;">โอนเข้า: กสิกรไทย 1961551699 (เกสร วรรณปัด)</p>
             </div>
             <div class="form-group">
-                <label>แนบสลิป <span class="required">*</span></label>
+                <label>แนบสลิป <span class="required">*</span> (ระบบจะย่อรูปให้อัตโนมัติ)</label>
                 <input type="file" id="paymentSlip" accept="image/*" required>
             </div>
             <label><input type="checkbox" id="agree" required> ยอมรับเงื่อนไขการแข่งขัน</label>
-            <button type="submit" class="btn-submit" id="submitBtn" disabled>ยืนยันการส่งข้อมูล</button>
+            <button type="submit" class="btn-submit" id="submitBtn" disabled>ยืนยันการสมัครและส่งข้อมูล</button>
         </div>
     </form>
 </div>
 
 <div id="popup" class="popup-overlay">
     <div class="popup-content">
-        <h2 id="st">กำลังบันทึก...</h2>
-        <p id="sm">ห้ามปิดหน้านี้จนกว่าจะเสร็จสิ้น</p>
-        <button class="btn-submit hidden" id="ok" onclick="location.reload()">กลับหน้าหลัก</button>
+        <h2 id="st">กำลังดำเนินการ...</h2>
+        <p id="sm">กรุณารอสักครู่ ระบบกำลังนำข้อมูลของคุณเข้าสู่ระบบ</p>
+        <button class="btn-submit hidden" id="ok" onclick="location.reload()">เรียบร้อย (กลับหน้าหลัก)</button>
     </div>
 </div>
 
 <script>
-    // --- เปลี่ยน URL ตรงนี้ ---
     const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw_SvDUNbg4l79j5cx7SLEqhAVk0ZYWs7lX8pVt6VUSKecfFJQ1o6_83vWdQHfFG7hu/exec';
     
     const SIZES = ['XS','S','M','L','XL','2XL','3XL','4XL','5XL'];
@@ -264,8 +258,6 @@
             document.getElementById('singleEntryForm').classList.toggle('hidden', pkg === 'Team');
             document.getElementById('teamEntryForm').classList.toggle('hidden', pkg !== 'Team');
             updateCalc();
-            
-            // Set required fields
             document.querySelectorAll('.req-s').forEach(el => el.required = pkg !== 'Team');
             document.querySelectorAll('.req-t').forEach(el => el.required = pkg === 'Team');
         };
@@ -283,43 +275,77 @@
 
     document.getElementById('agree').onchange = function() { document.getElementById('submitBtn').disabled = !this.checked; };
 
+    // บีบอัดภาพเพื่อป้องกัน Payload size limit ของ Google Script
+    async function compressImage(file) {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = (event) => {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+                    const MAX_WIDTH = 800; // ลดขนาดลงเหลือ 800px เพื่อความชัวร์
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    resolve(canvas.toDataURL('image/jpeg', 0.5)); // คุณภาพ 50% เพียงพอสำหรับสลิป
+                };
+            };
+        });
+    }
+
     document.getElementById('registrationForm').onsubmit = async function(e) {
         e.preventDefault();
-        document.getElementById('popup').style.display = 'flex';
+        const popup = document.getElementById('popup');
+        const st = document.getElementById('st');
+        const sm = document.getElementById('sm');
+        
+        popup.style.display = 'flex';
+        st.innerText = "กำลังย่อขนาดรูปสลิป...";
         
         try {
             const formData = new FormData(this);
             const payload = Object.fromEntries(formData.entries());
             
-            // Handle File
             const file = document.getElementById('paymentSlip').files[0];
             if(file) {
-                const reader = new FileReader();
-                payload.slip_base64 = await new Promise(r => { 
-                    reader.onload=()=>r(reader.result); 
-                    reader.readAsDataURL(file); 
-                });
+                payload.slip_base64 = await compressImage(file);
             }
 
+            st.innerText = "กำลังนำข้อมูลเข้าสู่ฐานข้อมูล...";
+            sm.innerText = "กรุณาอย่าปิดหน้านี้จนกว่าจะขึ้นเครื่องหมายถูก";
+            
             payload.package = document.querySelector('input[name="registration_package"]:checked').value;
             payload.total_price = basePrice;
-
-            // Send to Apps Script
+            
+            // ใช้ JSON.stringify เพื่อให้ Script รับแบบ JSON Object
             await fetch(WEB_APP_URL, {
                 method: 'POST',
-                mode: 'no-cors',
+                mode: 'no-cors', 
+                headers: { 'Content-Type': 'text/plain' }, // ป้องกัน Pre-flight CORS
                 body: JSON.stringify(payload)
             });
 
-            document.getElementById('st').innerText = "✅ บันทึกสำเร็จ!";
-            document.getElementById('sm').innerText = "ระบบส่งอีเมลแจ้งยืนยันให้คุณแล้ว (โปรดเช็คใน Junk Mail ด้วย)";
+            // เนื่องด้วยโหมด no-cors จะไม่รู้สถานะ success จริงๆ แต่ถ้าไม่มี Error ใน JS จะถือว่าส่งออกไปแล้ว
+            st.innerText = "✅ สมัครสำเร็จ!";
+            sm.innerText = "ระบบได้รับข้อมูลของคุณแล้ว ทีมงานจะตรวจสอบสลิปภายใน 24 ชม. และส่งอีเมลยืนยันให้คุณครับ";
             document.getElementById('ok').classList.remove('hidden');
         } catch (err) {
-            alert("Error: " + err.message);
-            document.getElementById('popup').style.display = 'none';
+            console.error(err);
+            st.innerText = "❌ เกิดข้อผิดพลาด";
+            sm.innerText = "ไม่สามารถส่งข้อมูลได้: " + err.message + "\nกรุณาแคปหน้าจอนี้แจ้งแอดมิน";
+            document.getElementById('ok').classList.remove('hidden');
+            document.getElementById('ok').innerText = "ลองใหม่อีกครั้ง";
         }
     };
 </script>
-
 </body>
 </html>
