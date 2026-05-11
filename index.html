@@ -168,14 +168,15 @@
             <div class="shirt-info">Deep Green Series - Special Edition</div>
         </div>
 
+        <!-- ย้ายช่องชื่อทีมมาไว้ตรงนี้เพื่อให้แสดงทุกแพ็คเกจ -->
+        <div id="teamNameSection" class="form-group">
+            <label id="teamNameLabel">ชื่อทีม / ชมรม (ถ้ามี)</label>
+            <input type="text" name="team_name" placeholder="ระบุชื่อทีมเพื่อแสดงบน BIB" id="teamNameInput">
+        </div>
+
         <div id="vipOnlyFields" class="form-group hidden">
             <label>หมายเลขทะเบียนรถ (เฉพาะ VIP) <span class="required">*</span></label>
             <input type="text" name="vehicle_registration" placeholder="ตัวอย่าง: กข 1234 นครราชสีมา">
-        </div>
-
-        <div id="teamNameCommon" class="form-group hidden">
-            <label>ชื่อทีม <span class="required">*</span></label>
-            <input type="text" name="team_name" placeholder="ระบุชื่อทีมของคุณ" id="teamNameInput">
         </div>
 
         <div id="singleEntryForm" class="hidden">
@@ -456,8 +457,21 @@
             document.getElementById('summaryPrice').textContent = currentBasePrice.toLocaleString() + ' บาท';
             
             const pkg = e.target.value;
+            
+            // ปรับชื่อ Label ของช่องชื่อทีมตามประเภทการสมัคร
+            const teamNameLabel = document.getElementById('teamNameLabel');
+            const teamNameInput = document.getElementById('teamNameInput');
+            if(pkg === 'Team') {
+                teamNameLabel.innerHTML = 'ชื่อทีม <span class="required">*</span>';
+                teamNameInput.placeholder = 'ระบุชื่อทีมของคุณ';
+                teamNameInput.required = true;
+            } else {
+                teamNameLabel.innerHTML = 'ชื่อทีม / ชมรม (ถ้ามี)';
+                teamNameInput.placeholder = 'ระบุชื่อทีมเพื่อแสดงบน BIB';
+                teamNameInput.required = false;
+            }
+
             document.getElementById('vipOnlyFields').classList.toggle('hidden', pkg !== 'VIP');
-            document.getElementById('teamNameCommon').classList.toggle('hidden', pkg !== 'Team');
             document.getElementById('singleEntryForm').classList.toggle('hidden', pkg === 'Team');
             document.getElementById('teamEntryForm').classList.toggle('hidden', pkg !== 'Team');
 
@@ -494,7 +508,6 @@
         if(e.target.files[0]) document.getElementById('fileLabel').textContent = "✅ " + e.target.files[0].name;
     });
 
-    // Modified resizeImage to return object with data and filename
     const getFileData = (file) => new Promise((resolve) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -534,10 +547,11 @@
             
             payload.action = "submitRegistration";
             payload.slip_base64 = fileInfo.base64;
-            payload.slip_name = fileInfo.name; // Send name to prevent Null Blob error
+            payload.slip_name = fileInfo.name;
             payload.package = pkg;
             payload.total_price = currentBasePrice;
 
+            // ปรับฟอร์แมตเบอร์โทรศัพท์เพื่อป้องกัน Excel ตัดเลข 0
             if (pkg === 'Team') {
                 payload.t1_phone = "'" + payload.t1_phone;
                 payload.t2_phone = "'" + payload.t2_phone;
@@ -547,6 +561,7 @@
             }
 
             progress.textContent = "กำลังส่งข้อมูล...";
+            // ใช้ fetch POST โดยตั้งค่า mode: 'no-cors' หากมีปัญหา CORS (แต่แนะนำให้ตั้งค่าใน GAS ให้ถูกต้อง)
             await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
             
             setTimeout(() => {
